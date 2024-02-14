@@ -1,16 +1,26 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Get,
+  Post,
+  Patch,
+  Param,
+  Query,
+  Delete,
+  Controller,
+} from '@nestjs/common';
 
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
+import { PaginationDTO } from 'src/common/dto/pagination.dto';
 
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeessService: CoffeesService) {}
 
   @Get()
-  index() {
-    return this.coffeessService.allCoffess();
+  index(@Query() query: PaginationDTO) {
+    return this.coffeessService.allCoffess(query);
   }
 
   @Get(':id')
@@ -31,5 +41,15 @@ export class CoffeesController {
   @Patch(':id')
   update(@Param('id') id: number, @Body() updateCoffee: UpdateCoffeeDto) {
     return this.coffeessService.updateCoffee(id, updateCoffee);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: number) {
+    return this.coffeessService.remove(id);
+  }
+
+  @Get(':id/recommend')
+  recommendCoffee(@Param('id') id: number) {
+    return this.coffeessService.recommendCoffee(id);
   }
 }
