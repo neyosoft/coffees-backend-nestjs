@@ -1,6 +1,6 @@
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 
-const dbConfig: DataSourceOptions = {
+const AppDataSource = new DataSource({
   // TypeORM PostgreSQL DB Drivers
   port: 5432,
   type: 'postgres',
@@ -9,9 +9,10 @@ const dbConfig: DataSourceOptions = {
   password: 'pass123',
   database: 'postgres',
   synchronize: false,
+  logging: true,
   entities: ['dist/**/*.entity.js'],
   migrations: ['dist/migrations/*.js'],
   migrationsTableName: 'migrations',
-};
+});
 
-export default new DataSource(dbConfig);
+export default AppDataSource;

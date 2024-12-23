@@ -7,19 +7,36 @@ import {
   Query,
   Delete,
   Controller,
+  Inject,
 } from '@nestjs/common';
 
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 import { PaginationDTO } from 'src/common/dto/pagination.dto';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import coffeeConfig from './config/coffee.config';
 
 @Controller('coffees')
 export class CoffeesController {
-  constructor(private readonly coffeessService: CoffeesService) {}
+  constructor(
+    private readonly coffeessService: CoffeesService,
+    private readonly configService: ConfigService,
+    @Inject('COFFEE_BRANDS') coffeeBrands: string[],
+    @Inject(coffeeConfig.KEY)
+    private readonly coffeeConfiguration: ConfigType<typeof coffeeConfig>,
+  ) {
+    console.log(
+      'Database host:',
+      this.configService.get<string>('DATABASE_HOST'),
+    );
+    console.log('Database PORT:', this.configService.get('database.port'));
+    console.log('FooBar:', coffeeConfiguration.foo);
+    console.log('coffeeBrands:', coffeeBrands);
+  }
 
   @Get()
-  index(@Query() query: PaginationDTO) {
+  allCoffees(@Query() query: PaginationDTO) {
     return this.coffeessService.allCoffess(query);
   }
 

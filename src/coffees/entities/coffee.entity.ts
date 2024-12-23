@@ -27,6 +27,6 @@ export class Coffee {
   recommendations: number;
 
   @JoinTable()
-  @ManyToMany(() => Flavor, (flavor) => flavor.coffees)
+  @ManyToMany(() => Flavor, (flavor) => flavor.coffees, { cascade: true })
   readonly flavors: Flavor[];
 }

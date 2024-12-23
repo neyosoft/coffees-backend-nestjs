@@ -7,11 +7,11 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "typeorm": "yarn build && npx typeorm -d dist/datasource.js",
-    "migration:generate": "npm run typeorm -- migration:generate",
-    "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert",
-    "migration:show": "npm run typeorm -- migration:show",
+    "typeorm": "npx typeorm-ts-node-commonjs -d dist/datasource.js",
+    "migration:generate": "npm run typeorm migration:generate",
+    "migration:run": "npm run typeorm migration:run",
+    "migration:revert": "npm run typeorm migration:revert",
+    "migration:show": "npm run typeorm migration:show",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -25,7 +25,9 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.3.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/mapped-types": "^2.0.4",
     "@nestjs/platform-express": "^10.0.0",

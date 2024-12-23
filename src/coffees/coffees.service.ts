@@ -1,4 +1,4 @@
-import { Connection, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import {
   HttpStatus,
   Injectable,
@@ -21,14 +21,16 @@ export class CoffeesService {
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
-    private readonly connection: Connection,
-  ) {}
+    private readonly connection: DataSource,
+  ) {
+    console.log('Inside the coffee service');
+  }
 
   allCoffess(query: PaginationDTO) {
     return this.coffeeRepository.find({
       relations: ['flavors'],
-      take: query.perPage,
-      skip: query.currentPage,
+      take: query.size,
+      skip: (query.page - 1) * query.size,
     });
   }
 
@@ -79,14 +81,14 @@ export class CoffeesService {
   }
 
   async recommendCoffee(coffeeId: number) {
-    const coffee = await this.findOne(coffeeId);
-
     const queryRunner = this.connection.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
     try {
+      const coffee = await this.findOne(coffeeId);
+
       coffee.recommendations++;
 
       const recommendEvent = new Event();
