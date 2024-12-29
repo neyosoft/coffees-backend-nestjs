@@ -26,7 +26,7 @@ export class CoffeesService {
     console.log('Inside the coffee service');
   }
 
-  allCoffess(query: PaginationDTO) {
+  async allCoffess(query: PaginationDTO) {
     return this.coffeeRepository.find({
       relations: ['flavors'],
       take: query.size,

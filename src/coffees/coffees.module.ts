@@ -12,7 +12,7 @@ import coffeeConfig from './config/coffee.config';
 @Module({
   providers: [
     CoffeesService,
-    { provide: 'COFFEE_BRANDS', useValue: ['buddy brew', 'nescafe'] },
+    { provide: 'COFFEE_BRAND', useValue: ['buddy brew', 'nescafe'] },
   ],
   controllers: [CoffeesController],
   exports: [CoffeesService],

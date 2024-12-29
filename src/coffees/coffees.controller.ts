@@ -1,3 +1,4 @@
+import { ConfigService, ConfigType } from '@nestjs/config';
 import {
   Body,
   Get,
@@ -6,23 +7,24 @@ import {
   Param,
   Query,
   Delete,
-  Controller,
   Inject,
+  Controller,
 } from '@nestjs/common';
 
+import coffeeConfig from './config/coffee.config';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 import { PaginationDTO } from 'src/common/dto/pagination.dto';
-import { ConfigService, ConfigType } from '@nestjs/config';
-import coffeeConfig from './config/coffee.config';
+import { Public } from 'src/common/decorators/public.docorators';
+import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
 
 @Controller('coffees')
 export class CoffeesController {
   constructor(
     private readonly coffeessService: CoffeesService,
     private readonly configService: ConfigService,
-    @Inject('COFFEE_BRANDS') coffeeBrands: string[],
+    @Inject('COFFEE_BRAND') coffeeBrands: string[],
     @Inject(coffeeConfig.KEY)
     private readonly coffeeConfiguration: ConfigType<typeof coffeeConfig>,
   ) {
@@ -31,17 +33,18 @@ export class CoffeesController {
       this.configService.get<string>('DATABASE_HOST'),
     );
     console.log('Database PORT:', this.configService.get('database.port'));
-    console.log('FooBar:', coffeeConfiguration.foo);
     console.log('coffeeBrands:', coffeeBrands);
+    console.log('FooBar:', coffeeConfiguration.foo);
   }
 
+  @Public()
   @Get()
-  allCoffees(@Query() query: PaginationDTO) {
+  allCoffees(protocol: string, @Query() query: PaginationDTO) {
     return this.coffeessService.allCoffess(query);
   }
 
   @Get(':id')
-  getOne(@Param('id') id: number) {
+  getOne(@Param('id', ParseIntPipe) id: number) {
     return this.coffeessService.findOne(id);
   }
 
