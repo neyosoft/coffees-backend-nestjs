@@ -22,9 +22,7 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly connection: DataSource,
-  ) {
-    console.log('Inside the coffee service');
-  }
+  ) {}
 
   async allCoffess(query: PaginationDTO) {
     return this.coffeeRepository.find({
