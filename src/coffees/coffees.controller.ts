@@ -16,6 +16,8 @@ import { UpdateCoffeeDto } from './dto/update.coffee.dto';
 import { PaginationDTO } from '../common/dto/pagination.dto';
 import { Public } from '../common/decorators/public.docorators';
 import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
+import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
+import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 
 @ApiTags('Coffees')
 @Controller('coffees')
@@ -24,7 +26,11 @@ export class CoffeesController {
 
   @Public()
   @Get()
-  allCoffees(@Query() query: PaginationDTO) {
+  allCoffees(
+    @Query() query: PaginationDTO,
+    @ActiveUser() activeUser: ActiveUserData,
+  ) {
+    console.log({ activeUser });
     return this.coffeessService.allCoffess(query);
   }
 
