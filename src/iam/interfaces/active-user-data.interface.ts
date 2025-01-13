@@ -1,3 +1,5 @@
+import { Role } from 'src/user/enums/role.enum';
+
 export interface ActiveUserData {
   /**
    *
@@ -10,4 +12,6 @@ export interface ActiveUserData {
    * The *email* of the user that is currently authenticated.
    */
   email: string;
+
+  role: Role;
 }

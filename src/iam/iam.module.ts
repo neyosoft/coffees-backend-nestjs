@@ -11,9 +11,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AccessTokenGuard } from './authentication/guards/access-token/access-token.guard';
 import { AuthenticationGuard } from './authentication/guards/authentication/authentication.guard';
+import { CommonModule } from 'src/common/common.module';
+import { RefreshTokenIdsStorage } from './authentication/refresh-token-ids.storage.service';
+import { RolesGuard } from './authorization/guards/roles.guard';
 
 @Module({
   imports: [
+    CommonModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync(jwtConfig.asProvider()),
     ConfigModule.forFeature(jwtConfig),
@@ -23,6 +27,8 @@ import { AuthenticationGuard } from './authentication/guards/authentication/auth
     { provide: HashingService, useClass: BcryptService },
     AuthenticationService,
     { provide: APP_GUARD, useClass: AuthenticationGuard },
+    { provide: APP_GUARD, useClass: RolesGuard },
+    RefreshTokenIdsStorage,
   ],
   controllers: [AuthenticationController],
 })

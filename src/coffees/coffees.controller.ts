@@ -18,6 +18,8 @@ import { Public } from '../common/decorators/public.docorators';
 import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
 import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
+import { Roles } from 'src/iam/authorization/decorators/role.decorator';
+import { Role } from 'src/user/enums/role.enum';
 
 @ApiTags('Coffees')
 @Controller('coffees')
@@ -55,6 +57,7 @@ export class CoffeesController {
     return this.coffeessService.updateCoffee(id, updateCoffee);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.coffeessService.remove(id);

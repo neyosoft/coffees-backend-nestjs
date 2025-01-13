@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import * as Joi from '@hapi/joi';
 
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,19 +10,14 @@ import { CommonModule } from './common/common.module';
 import appConfig from './config/app.config';
 import { IamModule } from './iam/iam.module';
 import { UserModule } from './user/user.module';
+import { configValidator } from './common/validators/config.validators';
 
 @Module({
   imports: [
     CoffeesModule,
     ConfigModule.forRoot({
       load: [appConfig],
-      validationSchema: Joi.object({
-        DATABASE_HOST: Joi.required(),
-        DATABASE_PORT: Joi.number().default(5432),
-        DATABASE_USER: Joi.required(),
-        DATABASE_PASSWORD: Joi.required(),
-        DATABASE_NAME: Joi.required(),
-      }),
+      validationSchema: configValidator,
     }),
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
