@@ -10,6 +10,7 @@ import {
   Controller,
 } from '@nestjs/common';
 
+import { Role } from 'src/user/enums/role.enum';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create.coffee.dto';
 import { UpdateCoffeeDto } from './dto/update.coffee.dto';
@@ -17,9 +18,8 @@ import { PaginationDTO } from '../common/dto/pagination.dto';
 import { Public } from '../common/decorators/public.docorators';
 import { ParseIntPipe } from '../common/pipes/parse-int.pipe';
 import { ActiveUser } from 'src/iam/decorators/active-user.decorator';
-import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 import { Roles } from 'src/iam/authorization/decorators/role.decorator';
-import { Role } from 'src/user/enums/role.enum';
+import { ActiveUserData } from 'src/iam/interfaces/active-user-data.interface';
 
 @ApiTags('Coffees')
 @Controller('coffees')
